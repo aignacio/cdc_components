@@ -23,7 +23,7 @@
  * SOFTWARE.
  */
 module cdc_2ff_sync # (
-  parameter DATA_WIDTH = 8
+  parameter int DATA_WIDTH = 8
 )(
 );
 endmodule
