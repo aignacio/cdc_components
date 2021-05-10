@@ -23,7 +23,25 @@
  * SOFTWARE.
  */
 module cdc_2ff_sync # (
-  parameter int DATA_WIDTH = 8
+  parameter DATA_WIDTH = 8 // Data width in bits
 )(
+  input                     arst_master,
+  input                     clk_in_a,
+  input                     clk_in_b,
+  input   [DATA_WIDTH-1:0]  data_a_i,
+  output  [DATA_WIDTH-1:0]  data_b_o
 );
+  logic [1:0] [DATA_WIDTH-1:0] meta_ffs;
+
+  always_comb begin
+  end
+
+  always_ff @ (posedge clk_in_b or posedge arst_master) begin
+    if (arst_master) begin
+      meta_ffs <= '0;
+    end
+    else begin
+      {data_b_o,meta_ffs[0]} <= {meta_ffs[1],data_a_i};
+    end
+  end
 endmodule
