@@ -23,7 +23,7 @@
  * SOFTWARE.
  */
 module cdc_2ff_sync # (
-  parameter DATA_WIDTH = 8 // Data width in bits
+  parameter int DATA_WIDTH = 8 // Data width in bits
 )(
   input                     arst_master,
   input                     clk_in_a,
