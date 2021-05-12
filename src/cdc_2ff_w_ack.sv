@@ -1,6 +1,6 @@
 /**
- * File: cdc_2ff_sync.sv
- * Description: 2x Flip-Flop synchonizer
+ * File: cdc_2ff_w_ack.sv
+ * Description: 2x Flip-Flop synchonizer with acknowledge
  * Author: Anderson Ignacio da Silva <aignacio@aignacio.com>
  *
  * MIT License
@@ -22,26 +22,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module cdc_2ff_sync # (
+module cdc_2ff_w_ack # (
   parameter int DATA_WIDTH = 1 // Data width in bits
 )(
-  input                           arst_master,
-  input                           clk_sync,
-  input         [DATA_WIDTH-1:0]  async_i,
-  output  logic [DATA_WIDTH-1:0]  sync_o
+  input                     arst_a,
+  input                     arst_b,
+  input                     clk_a_in,
+  input                     clk_b_in,
+  input   [DATA_WIDTH-1:0]  data_a_i,
+  output                    ack_a_o,
+  output  [DATA_WIDTH-1:0]  data_b_o
 );
-  logic [1:0] [DATA_WIDTH-1:0] meta_ffs;
+  logic [DATA_WIDTH-1:0]  data_a_ffs;
 
-  always_comb begin
-    sync_o = meta_ffs[1];
-  end
-
-  always_ff @ (posedge clk_sync or posedge arst_master) begin
-    if (arst_master) begin
-      meta_ffs <= '0;
+  always_ff @ (posedge clk_a_in or posedge arst_a) begin
+    if (arst_a) begin
+      data_a_ffs <= '0;
     end
     else begin
-      {meta_ffs[1],meta_ffs[0]} <= {meta_ffs[0],async_i};
+      data_a_ffs <= data_a_i;
     end
   end
+
+  cdc_2ff_sync# (
+    .DATA_WIDTH(1)
+  ) u_ack_from_b (
+    .arst_master(arst_a),
+    .clk_sync   (clk_a_in),
+    .async_i    (|data_b_o),
+    .sync_o     (ack_a_o)
+  );
+
+  cdc_2ff_sync# (
+    .DATA_WIDTH(DATA_WIDTH)
+  ) u_sync_from_a (
+    .arst_master(arst_b),
+    .clk_sync   (clk_b_in),
+    .async_i    (data_a_ffs),
+    .sync_o     (data_b_o)
+  );
 endmodule

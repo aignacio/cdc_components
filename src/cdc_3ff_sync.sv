@@ -1,6 +1,6 @@
 /**
- * File: cdc_2ff_sync.sv
- * Description: 2x Flip-Flop synchonizer
+ * File: cdc_3ff_sync.sv
+ * Description: 3x Flip-Flop synchonizer for high speed designs due to MTBF
  * Author: Anderson Ignacio da Silva <aignacio@aignacio.com>
  *
  * MIT License
@@ -22,18 +22,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module cdc_2ff_sync # (
+module cdc_3ff_sync # (
   parameter int DATA_WIDTH = 1 // Data width in bits
 )(
   input                           arst_master,
   input                           clk_sync,
   input         [DATA_WIDTH-1:0]  async_i,
-  output  logic [DATA_WIDTH-1:0]  sync_o
+  output logic  [DATA_WIDTH-1:0]  sync_o
 );
-  logic [1:0] [DATA_WIDTH-1:0] meta_ffs;
+  logic [2:0] [DATA_WIDTH-1:0] meta_ffs;
 
   always_comb begin
-    sync_o = meta_ffs[1];
+    sync_o = meta_ffs[2];
   end
 
   always_ff @ (posedge clk_sync or posedge arst_master) begin
@@ -41,7 +41,7 @@ module cdc_2ff_sync # (
       meta_ffs <= '0;
     end
     else begin
-      {meta_ffs[1],meta_ffs[0]} <= {meta_ffs[0],async_i};
+      {meta_ffs[2],meta_ffs[1],meta_ffs[0]} <= {meta_ffs[1],meta_ffs[0],async_i};
     end
   end
 endmodule
