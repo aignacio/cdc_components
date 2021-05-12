@@ -1,4 +1,4 @@
-[![lint-sv](https://github.com/aignacio/cdc_components/actions/workflows/lint_sv.yaml/badge.svg)](https://github.com/aignacio/cdc_components/actions/workflows/lint_sv.yaml)
+[![Regression Tests](https://github.com/aignacio/cdc_components/actions/workflows/regression.yaml/badge.svg?branch=master)](https://github.com/aignacio/cdc_components/actions/workflows/regression.yaml) [![lint-sv](https://github.com/aignacio/cdc_components/actions/workflows/lint_sv.yaml/badge.svg)](https://github.com/aignacio/cdc_components/actions/workflows/lint_sv.yaml)
 
 # CDC components
 
