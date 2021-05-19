@@ -73,8 +73,8 @@ module cdc_async_fifo # (
                           // we only use it to gen the empty
                           // flag, and crossing gray encoding
                           // it's more stable than bin encoding
-  ptr_t META_w_rd_gry_ff;
-  ptr_t META_r_wr_gry_ff;
+  (* async_reg = "true" *) ptr_t META_w_rd_gry_ff;
+  (* async_reg = "true" *) ptr_t META_r_wr_gry_ff;
 
   //************************
   // Functions

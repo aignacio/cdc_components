@@ -33,7 +33,7 @@ module cdc_2ff_w_ack # (
   output                    ack_a_o,
   output  [DATA_WIDTH-1:0]  data_b_o
 );
-  logic [DATA_WIDTH-1:0]  data_a_ffs;
+  (* async_reg = "true" *) logic [DATA_WIDTH-1:0]  data_a_ffs;
 
   always_ff @ (posedge clk_a_in or posedge arst_a) begin
     if (arst_a) begin

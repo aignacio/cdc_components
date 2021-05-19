@@ -30,7 +30,7 @@ module cdc_3ff_sync # (
   input         [DATA_WIDTH-1:0]  async_i,
   output logic  [DATA_WIDTH-1:0]  sync_o
 );
-  logic [2:0] [DATA_WIDTH-1:0] meta_ffs;
+  (* async_reg = "true" *) logic [2:0] [DATA_WIDTH-1:0] meta_ffs;
 
   always_comb begin
     sync_o = meta_ffs[2];
