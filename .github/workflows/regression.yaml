@@ -8,7 +8,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [3.9]
+        python-version: [3.12]
         group: [1, 2, 3, 4, 5]
 
     steps:
@@ -24,7 +24,7 @@ jobs:
         sudo apt install -y --no-install-recommends make g++ perl python3 autoconf flex bison libfl2 libfl-dev zlibc zlib1g zlib1g-dev
         git clone https://github.com/verilator/verilator.git
         cd verilator
-        git checkout v4.106
+        git checkout v5.026
         autoconf
         ./configure
         make -j $(nproc)
@@ -40,7 +40,7 @@ jobs:
         SIM: verilator
         CXX: 'g++'
         CC:  'gcc'
-        PYTHON_VERSION: 3.9
+        PYTHON_VERSION: 3.12
         FULL_REGRESSION: 1
         TOX_TESTENV_PASSENV: GITHUB_ACTIONS
       run: tox -- --splits 5 --group ${{ matrix.group }}
