@@ -97,14 +97,17 @@ module cdc_async_fifo_w_ocup # (
   //************************
   // Write logic
   //************************
+  always_comb begin
+    // Separating wr_full_o into another procedure due to verilator UNOPTFLAT
+    wr_full_o = (w_wr_bin_ptr_ff[$clog2(SLOTS)] == ~w_rd_bin_ptr[$clog2(SLOTS)]) &&
+                (w_wr_bin_ptr_ff[$clog2(SLOTS)-1:0] == w_rd_bin_ptr[$clog2(SLOTS)-1:0]);
+  end
+
   always_comb begin : wr_pointer
     next_w_wr_bin_ptr = w_wr_bin_ptr_ff;
     w_rd_bin_ptr = gray_to_bin(w_rd_gry_ptr_ff);
 
     ocup_o = w_wr_bin_ptr_ff - w_rd_bin_ptr;
-
-    wr_full_o = (w_wr_bin_ptr_ff[$clog2(SLOTS)] == ~w_rd_bin_ptr[$clog2(SLOTS)]) &&
-                (w_wr_bin_ptr_ff[$clog2(SLOTS)-1:0] == w_rd_bin_ptr[$clog2(SLOTS)-1:0]);
 
     if (wr_en_i && ~wr_full_o) begin
       next_w_wr_bin_ptr = w_wr_bin_ptr_ff + 'd1;
@@ -134,10 +137,13 @@ module cdc_async_fifo_w_ocup # (
   //************************
   // Read logic
   //************************
+  always_comb begin
+    // Separating rd_empty_o into another procedure due to verilator UNOPTFLAT
+    rd_empty_o = (bin_to_gray(r_rd_bin_ptr_ff) == r_wr_gry_ptr_ff);
+  end
+
   always_comb begin : rd_pointer
     next_r_rd_bin_ptr = r_rd_bin_ptr_ff;
-
-    rd_empty_o = (bin_to_gray(r_rd_bin_ptr_ff) == r_wr_gry_ptr_ff);
 
     if (rd_en_i && ~rd_empty_o) begin
       next_r_rd_bin_ptr = r_rd_bin_ptr_ff + 'd1;
