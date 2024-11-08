@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# File              : test_afifo.py
+# File              : test_3ff.py
 # License           : MIT license <Check LICENSE>
 # Author            : Anderson Ignacio da Silva (aignacio) <anderson@aignacio.com>
 # Date              : 12.05.2021
-# Last Modified Date: 12.05.2021
+# Last Modified Date: 08.11.2024
 # Last Modified By  : Anderson Ignacio da Silva (aignacio) <anderson@aignacio.com>
 import random
 import cocotb
@@ -92,6 +92,8 @@ def test_3ff(width):
         parameters=parameters,
         sim_build=sim_build,
         extra_env=extra_env,
-        extra_args=["--trace-fst","--trace-structs"]
+        extra_args=["--trace-fst","--trace-structs"],
+        waves=1,
+        plus_args=["--trace"],
         #extra_args=extra_args
     )
